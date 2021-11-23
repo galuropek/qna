@@ -1,0 +1,22 @@
+require: rubocop-rails
+
+AllCops:
+  Include:
+    - 'app/**/*.rb'
+    - 'config/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+  Exclude:
+    - 'vendor/**/*.rb'
+    - 'spec/**/*'
+    - 'db/*.rb'
+    - 'bin/**/*'
+  DisplayCopNames: true
+  StyleGuideCopsOnly: true
+  
+Style/StringLiterals:
+  Enabled: false
+Style/GlobalStdStream:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false
