@@ -18,5 +18,14 @@ module Qna
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.generators do |g|
+      g.test_framework :rspec,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       request_specs: false,
+                       controller_specs: true # disabled if I don't use true here, after config overriding
+    end
   end
 end

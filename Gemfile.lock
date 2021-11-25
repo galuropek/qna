@@ -80,6 +80,8 @@ GEM
     childprocess (4.1.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
+    decent_exposure (3.0.4)
+      activesupport (>= 4.0)
     diff-lcs (1.4.4)
     erubi (1.10.0)
     factory_bot (6.2.0)
@@ -143,6 +145,10 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.4.1)
       sprockets-rails (>= 2.0.0)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -212,6 +218,13 @@ GEM
     semantic_range (3.0.0)
     shoulda-matchers (5.0.0)
       activesupport (>= 5.2.0)
+    slim (4.1.0)
+      temple (>= 0.7.6, < 0.9)
+      tilt (>= 2.0.6, < 2.1)
+    slim-rails (3.3.0)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      slim (>= 3.0, < 5.0)
     spring (3.0.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -220,6 +233,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    temple (0.8.2)
     thor (1.1.0)
     tilt (2.0.10)
     turbolinks (5.2.1)
@@ -256,6 +270,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
+  decent_exposure (~> 3.0)
   factory_bot_rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
@@ -263,12 +278,13 @@ DEPENDENCIES
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4, >= 6.1.4.1)
+  rails-controller-testing
   rspec-rails (~> 5.0.0)
-  rubocop
   rubocop-rails
   sass-rails (>= 6)
   selenium-webdriver
   shoulda-matchers (~> 5.0)
+  slim-rails
   spring
   turbolinks (~> 5)
   tzinfo-data
