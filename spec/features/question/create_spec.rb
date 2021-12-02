@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 feature 'User can create question' do
+
+  background { visit questions_path }
+
   scenario 'User asks a question' do
-    visit questions_path
     click_on 'Ask question'
 
     fill_in 'Title', with: 'Test question'
@@ -15,7 +17,6 @@ feature 'User can create question' do
   end
 
   scenario 'User asks a question with error' do
-    visit questions_path
     click_on 'Ask question'
 
     click_on 'Ask'
