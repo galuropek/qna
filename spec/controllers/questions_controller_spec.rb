@@ -6,10 +6,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'POST #create' do
     let(:user) { create(:user) }
 
-    before do 
-      @request.env['devise.mapping'] = Devise.mappings[:user]
-      sign_in(user)
-    end
+    before { login(user) }
 
     context 'with valid attributes' do
       it 'saves a new question in the database' do
