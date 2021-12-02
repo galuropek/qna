@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_answer, only: :show
 
   expose :questions, ->{ Question.all }

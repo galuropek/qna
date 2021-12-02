@@ -26,10 +26,4 @@ feature 'User can sign up', %q{
 
     expect(page).to have_content 'Email has already been taken'
   end
-
-  scenario 'User registers in the system with error' do
-    click_on 'Sign up'
-
-    expect(page).to have_content "Email can't be blank"
-  end
 end

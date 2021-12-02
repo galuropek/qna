@@ -4,6 +4,13 @@ RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
 
   describe 'POST #create' do
+    let(:user) { create(:user) }
+
+    before do 
+      @request.env['devise.mapping'] = Devise.mappings[:user]
+      sign_in(user)
+    end
+
     context 'with valid attributes' do
       it 'saves a new question in the database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
