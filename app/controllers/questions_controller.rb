@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :set_answer, only: :show
+
   expose :questions, ->{ Question.all }
   expose :question
 
@@ -11,6 +13,10 @@ class QuestionsController < ApplicationController
   end
 
   private
+
+  def set_answer
+    @answer = Answer.new
+  end
 
   def question_params
     params.require(:question).permit(:title, :body)
