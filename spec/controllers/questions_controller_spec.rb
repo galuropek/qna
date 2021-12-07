@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:user) { create(:user) }
   let(:question) { create(:question) }
 
   describe 'POST #create' do
-    let(:user) { create(:user) }
-
     before { login(user) }
 
     context 'with valid attributes' do
@@ -27,6 +26,41 @@ RSpec.describe QuestionsController, type: :controller do
       it 're-renders new view' do
         post :create, params: { question: attributes_for(:question, :invalid) }
         expect(response).to render_template(:new)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question, user: user) }
+
+    context 'authenticated user' do
+      let(:other_user) { create(:user) }
+      let!(:other_question) { create(:question, user: other_user) }
+
+      before { login(user) }
+
+      it 'removes question from db' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+
+      it 'does not remove the question' do
+        expect { delete :destroy, params: { id: other_question } }.to change(Question, :count).by(0)
+      end
+
+      it 'redirects to show' do
+        delete :destroy, params: { id: other_question }
+        expect(response).to redirect_to question_path(other_question)
+      end
+    end
+
+    context 'unathenticated user' do
+      it 'does not remove the question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
       end
     end
   end

@@ -1,14 +1,21 @@
 = render 'shared/errors', resource: @answer
 
-h1= question.title
+h1= 'Question:'
+h2= question.title
 p= question.body
+- if current_user&.author?(question)
+  = link_to 'Remove Question', question_path(question), method: :delete
 
+h1= 'Answers:'
 ul
   - question.answers.each do |answer|
     li
       p= answer.title
       p= answer.body
+      - if answer.id && current_user&.author?(answer)
+        = link_to 'remove answer', answer_path(answer), method: :delete
 
+h1= 'Answer the question:'
 = form_with model: @answer, url: question_answers_path(question) do |f|
   = f.label :title
   = f.text_field :title
