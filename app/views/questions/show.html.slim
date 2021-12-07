@@ -16,7 +16,7 @@ ul
         = link_to 'remove answer', answer_path(answer), method: :delete
 
 h1= 'Answer the question:'
-= form_with model: @answer, url: question_answers_path(question) do |f|
+= form_with model: @answer, url: question_answers_path(question), local: true do |f|
   = f.label :title
   = f.text_field :title
   = f.label :body
