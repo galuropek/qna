@@ -49,7 +49,7 @@ RSpec.describe AnswersController, type: :controller do
       before { login(user) }
 
       it 'removes answer from db' do
-        expect { delete :destroy, params: { id: answer } }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
       end
 
       it 'redirects to the question`s index' do
@@ -58,7 +58,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'does not remove an answer' do
-        expect { delete :destroy, params: { id: other_answer } }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: other_answer } }.to_not change(Answer, :count)
       end
 
       it 'redirects to question`s show' do
@@ -69,7 +69,7 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'unathenticated user' do
       it 'does not remove an answer' do
-        expect { delete :destroy, params: { id: answer } }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
     end
   end
