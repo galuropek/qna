@@ -13,5 +13,5 @@ h1= 'Answer the question:'
   = render 'shared/errors', resource: @answer
 = form_with model: @answer, url: question_answers_path(question), local: false, format: :js do |f|
   = f.label :body
-  = f.text_area :body
+  = f.text_area :body, class: 'new-answer-body'
   = f.submit 'Answer'
