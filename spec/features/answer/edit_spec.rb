@@ -9,31 +9,83 @@ feature 'User can edit his answer', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
+  given(:other_user) { create(:user) }
+  given(:other_answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Unauthenticated user can`t edit answer' do
-    visit question_path(question)
-
-    expect(page).to_not have_link 'edit answer'
-  end
-
-  describe 'Authenticated user' do
-    scenario 'edits his answer', js: true do
-      sign_in user
+  describe 'Unauthenticated user' do
+    scenario 'can`t edit answer' do
       visit question_path(question)
 
+      expect(page).to_not have_link 'edit answer'
+    end
+  end
+
+  describe 'Authenticated user', js: true do
+    background { sign_in user }
+
+    scenario 'edits his answer' do
+      visit question_path(question)
       click_on 'edit answer'
 
       within '.answers' do
         fill_in 'Your answer', with: 'edited body'
         click_on 'Save'
 
-        expect(page).to_not have_content answer.body
-        expect(page).to have_content 'edited body'
-        expect(page).to_not have_selector 'textarea'
+        check_edited_answer('edited body')
       end
     end
 
-    scenario 'edits his answer with error'
-    scenario 'tries to edit othe user`s answer'
+    scenario 'edits his answer with error' do
+      visit question_path(question)
+      click_on 'edit answer'
+
+      within '.answers' do
+        fill_in 'Your answer', with: ''
+        click_on 'Save'
+
+        expect(page).to have_content "Body can't be blank"
+      end
+    end
+
+    # tests bellow: cases from the screencast
+    scenario 'edits his several answers from the loaded page' do
+      other_answer
+      visit question_path(question)
+
+      within '.answers' do
+        page.all('.edit-answer-link').first.click
+        fill_in 'Your answer', with: 'first edited body'
+        click_on 'Save'
+
+        page.all('.edit-answer-link').last.click
+        fill_in 'Your answer', with: 'second edited body'
+        click_on 'Save'
+
+        check_edited_answer('first edited body')
+        check_edited_answer('second edited body')
+      end
+    end
+
+    scenario 'edits answer after redirect to answer page' do
+      visit questions_path
+      page.all('.question-link').first.click
+      click_on 'edit answer'
+
+      within '.answers' do
+        fill_in 'Your answer', with: 'edited body'
+        click_on 'Save'
+
+        check_edited_answer('edited body')
+      end
+    end
+  end
+
+  describe 'Other user' do
+    scenario 'tries to edit someone else`s answer' do
+      sign_in other_user
+      visit question_path(question)
+
+      expect(page).to_not have_link 'edit answer'
+    end
   end
 end

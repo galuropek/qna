@@ -2,7 +2,7 @@ h1= 'Questions list:'
 
 ul
   - questions.each do |question|
-    li 
-      = link_to question.title, question_path(question)
+    li
+      = link_to question.title, question_path(question), class: 'question-link'
 
 p= link_to 'Ask question', new_question_path
