@@ -15,7 +15,7 @@ feature 'User can remove question', %q{
 
     scenario 'removes his question' do
       visit question_path(question)
-      click_on 'Remove Question'
+      click_on 'remove question'
 
       expect(page).to have_content 'Question successfully removed.'
     end

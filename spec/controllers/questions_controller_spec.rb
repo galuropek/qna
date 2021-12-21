@@ -30,6 +30,43 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    context 'Authenticated user' do
+      before { login(user) }
+
+      it 'changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+        question.reload
+        expect(question.title).to eq 'edited title'
+        expect(question.body).to eq 'edited body'
+      end
+
+      it 'sees render update template' do
+        patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js      
+        expect(response).to render_template :update
+      end
+
+      it 'does not change question attributes with error' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        end.to_not change(question, :title)
+      end
+
+      it 'sees render update template with error' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Unauthenticated user' do
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+        end.to_not change(question, :title)
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:question) { create(:question, user: user) }
 

@@ -31,7 +31,7 @@ feature 'User can edit his answer', %q{
         fill_in 'Your answer', with: 'edited body'
         click_on 'Save'
 
-        check_edited_answer('edited body')
+        check_edited_answer(answer, body: 'edited body')
       end
     end
 
@@ -61,12 +61,12 @@ feature 'User can edit his answer', %q{
         fill_in 'Your answer', with: 'second edited body'
         click_on 'Save'
 
-        check_edited_answer('first edited body')
-        check_edited_answer('second edited body')
+        check_edited_answer(answer, body: 'first edited body')
+        check_edited_answer(answer, body: 'second edited body')
       end
     end
 
-    scenario 'edits answer after redirect to answer page' do
+    scenario 'edits answer after redirect from other page' do
       visit questions_path
       page.all('.question-link').first.click
       click_on 'edit answer'
@@ -75,12 +75,12 @@ feature 'User can edit his answer', %q{
         fill_in 'Your answer', with: 'edited body'
         click_on 'Save'
 
-        check_edited_answer('edited body')
+        check_edited_answer(answer, body: 'edited body')
       end
     end
   end
 
-  describe 'Other user' do
+  describe 'Other user (not author)' do
     scenario 'tries to edit someone else`s answer' do
       sign_in other_user
       visit question_path(question)

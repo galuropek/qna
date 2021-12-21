@@ -1,0 +1,5 @@
+$('.question-container').find('.edit-question-errors').html('<%= render "shared/errors", resource: question %>');
+
+<% unless question.errors.present? %>
+  $('.question-container').html('<%= j render question %>');
+<% end %>

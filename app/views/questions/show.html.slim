@@ -1,8 +1,5 @@
 h1= 'Question:'
-h2= question.title
-p= question.body
-- if current_user&.author?(question)
-  = link_to 'Remove Question', question_path(question), method: :delete
+= render question
 
 h1= 'Answers:'
 .answers

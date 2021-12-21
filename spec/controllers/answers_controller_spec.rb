@@ -51,7 +51,7 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to eq 'edited body'
       end
 
-      it 'renders update view' do
+      it 'renders update template' do
         patch :update, params: { id: answer, answer: { body: 'edited body' } }, format: :js
         expect(response).to render_template :update
       end
@@ -64,7 +64,7 @@ RSpec.describe AnswersController, type: :controller do
         end.to_not change(answer, :body)
       end
 
-      it 'renders update view' do
+      it 'renders update template' do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
         expect(response).to render_template :update
       end

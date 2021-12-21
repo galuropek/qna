@@ -6,9 +6,17 @@ module FeatureHelpers
     click_on 'Log in'
   end
 
-  def check_edited_answer(expected_body)
-    expect(page).to_not have_content 'MyText'
-    expect(page).to have_content expected_body
+  def check_edited_answer(answer, updated_attrs)
+    expect(page).to_not have_content answer.body
+    expect(page).to have_content updated_attrs[:body]
+    expect(page).to_not have_selector 'textarea'
+  end
+
+  def check_edited_question(question, updated_attrs)
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
+    expect(page).to have_content updated_attrs[:title]
+    expect(page).to have_content updated_attrs[:body]
     expect(page).to_not have_selector 'textarea'
   end
 end
