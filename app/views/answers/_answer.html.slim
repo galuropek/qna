@@ -10,4 +10,4 @@
         = f.submit 'Save'
 
       p= link_to 'edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-      p= link_to 'remove answer', answer_path(answer), method: :delete
+      p= link_to 'remove answer', answer_path(answer), method: :delete, remote: true

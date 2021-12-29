@@ -8,7 +8,7 @@ feature 'User can remove answer', %q{
   given(:question) { create(:question, user: user) }
   given(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     given(:other_user) { create(:user) }
     given(:other_answer) { create(:answer, question: question, user: other_user) }
 
@@ -18,7 +18,9 @@ feature 'User can remove answer', %q{
       visit question_path(answer.question)
       click_on 'remove answer'
 
-      expect(page).to have_content 'Answer successfully removed.'
+      within '.answers' do
+        expect(page).to_not have_content answer.body
+      end
     end
 
     scenario 'removes someone else`s answer' do
@@ -28,10 +30,12 @@ feature 'User can remove answer', %q{
     end
   end
 
-  scenario 'Unautheticated user removes a answer' do
-    visit question_path(answer.question)
+  describe 'Unautheticated user' do
+    scenario 'removes a answer' do
+      visit question_path(answer.question)
 
-    expect(page).to have_no_link 'remove answer'
+      expect(page).to have_no_link 'remove answer'
+    end
   end
 end
 

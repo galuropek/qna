@@ -1,0 +1,3 @@
+<% unless answer.persisted? %>
+  $('.answer-id-' + <%= answer.id %>).html('');
+<% end %>
