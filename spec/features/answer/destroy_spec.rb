@@ -9,13 +9,14 @@ feature 'User can remove answer', %q{
   given(:answer) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user', js: true do
-    given(:other_user) { create(:user) }
-    given(:other_answer) { create(:answer, question: question, user: other_user) }
+    given!(:other_user) { create(:user) }
+    given!(:other_answer) { create(:answer, question: question, user: other_user) }
 
     background { sign_in(user) }
 
     scenario 'removes his answer' do
       visit question_path(answer.question)
+      save_and_open_page
       click_on 'remove answer'
 
       within '.answers' do

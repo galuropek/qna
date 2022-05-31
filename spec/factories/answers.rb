@@ -1,7 +1,9 @@
 FactoryBot.define do
+  sequence(:body) { |n| "Answer body #{n}" }
+
   factory :answer do
     title { "MyString" }
-    body { "MyText" }
+    body
     question
     user
 
