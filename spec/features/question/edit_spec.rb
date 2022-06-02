@@ -50,7 +50,7 @@ feature 'User can edit his question', %q{
     # tests case with turbolinks from the screencast
     scenario 'edits question after redirect from other page' do
       visit questions_path
-      page.all('.question-link').first.click
+      all('.question-link').first.click
 
       within '.question-container' do
         click_on 'edit question'

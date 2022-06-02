@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, user: user) }
+  let(:other_user) { create(:user) }
+  let(:other_answer) { create(:answer, user: other_user) }
+  let(:question) { create(:question, user: user, answers: [answer, other_answer]) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -32,7 +35,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     context 'Authenticated user' do
-      let(:other_user) { create(:user) }
       let!(:other_question) { create(:question, user: other_user) }
 
       before { login(user) }
@@ -87,7 +89,6 @@ RSpec.describe QuestionsController, type: :controller do
     let!(:question) { create(:question, user: user) }
 
     context 'authenticated user' do
-      let(:other_user) { create(:user) }
       let!(:other_question) { create(:question, user: other_user) }
 
       before { login(user) }

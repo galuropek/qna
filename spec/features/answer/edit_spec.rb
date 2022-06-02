@@ -68,7 +68,7 @@ feature 'User can edit his answer', %q{
 
     scenario 'edits answer after redirect from other page' do
       visit questions_path
-      page.all('.question-link').first.click
+      all('.question-link').first.click
       click_on 'edit answer'
 
       within '.answers' do

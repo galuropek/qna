@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, user: user) }
+  let(:other_user) { create(:user) }
+  let(:other_answer) { create(:answer, user: other_user) }
+  let!(:question) { create(:question, user: user, answers: [answer, other_answer]) }
 
   describe 'GET #new' do
     before { login(user) }
@@ -40,11 +43,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:answer) { create(:answer, user: user, question: question) }
-
     context 'Authenticated user' do
-      let(:other_user) { create(:user) }
-      let!(:other_answer) { create(:answer, user: other_user, question: question) }
 
       before { login(user) }
 
@@ -93,12 +92,52 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
-  describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, user: user, question: question) }
+  describe 'PATCH #mark_as_best' do
+    context 'Author of question' do
 
+      before { login(user) }
+
+      # it 'marks answer as a best' do
+      #   expect(question.best_answer).to be(nil)
+      #   patch :best, params: { id: answer }
+      #   question.reload
+      #   expect(question.best_answer).to eq answer
+      # end
+
+      it 'mark other answer as a best when best answer is exists' do
+        expect(question.best_answer).to be(nil)
+        question.update(best_answer_id: answer.id)
+        question.reload
+        expect(question.best_answer).to eq answer
+        patch :best, params: { id: other_answer }
+        question.reload
+        expect(question.best_answer).to eq other_answer
+      end
+    end
+
+    context 'Authenticated user (but not author)' do
+      before { login(other_user) }
+
+      it "can't mark answer as a best" do
+        expect(question.best_answer).to be(nil)
+        patch :best, params: { id: answer }
+        question.reload
+        expect(question.best_answer).to be(nil)
+      end
+    end
+
+    context 'Unauthenticated user' do
+      it "can't mark answer as a best" do
+        expect(question.best_answer).to be(nil)
+        patch :best, params: { id: answer }
+        question.reload
+        expect(question.best_answer).to be(nil)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
     context 'Authenticated user' do
-      let(:other_user) { create(:user) }
-      let!(:other_answer) { create(:answer, user: other_user, question: question) }
 
       before { login(user) }
 

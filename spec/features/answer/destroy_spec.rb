@@ -16,7 +16,6 @@ feature 'User can remove answer', %q{
 
     scenario 'removes his answer' do
       visit question_path(answer.question)
-      save_and_open_page
       click_on 'remove answer'
 
       within '.answers' do

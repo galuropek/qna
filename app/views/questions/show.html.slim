@@ -2,8 +2,14 @@ h1= 'Question:'
 = render question
 
 h1= 'Answers:'
+
 .answers
-  = render question.answers
+  - if question.best_answer
+    .best_answer
+      p= 'BEST'
+      = render @best_answer
+
+  = render @other_answers
 
 h1= 'Answer the question:'
 .answer-errors
