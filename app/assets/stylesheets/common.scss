@@ -1,1 +1,24 @@
 .hidden { display: none }
+.actions {
+  display: flex;
+  p {
+    margin: 0;
+    padding-right: 10px;
+  }
+}
+.best_answer {
+  .body {
+    border: 2px solid MediumSeaGreen;
+    border-radius: 10px;
+    padding: 5px;
+  }
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

@@ -10,10 +10,17 @@ html
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    ul
-      li
-        = link_to 'Logout', destroy_user_session_path, method: :delete
-    | > 
+    div(class="nav")
+      p
+        = link_to 'Home', questions_path
+      = '|'
+      - if user_signed_in?
+        p
+          = link_to 'Logout', destroy_user_session_path, method: :delete
+      - else
+        p
+          = link_to 'Sign In', new_user_session_path
+
     p.notice
       = notice
     p.alert

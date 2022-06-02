@@ -13,5 +13,6 @@
       br
       = f.submit 'Save'
 
-    p= link_to 'edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
-    p= link_to 'remove question', question_path(question), method: :delete
+    div(class='actions')
+      p= link_to 'edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+      p= link_to 'remove question', question_path(question), method: :delete

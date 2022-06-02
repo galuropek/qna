@@ -6,7 +6,6 @@ h1= 'Answers:'
 .answers
   - if question.best_answer
     .best_answer
-      p= 'BEST'
       = render @best_answer
 
   = render @other_answers
