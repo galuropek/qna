@@ -17,7 +17,6 @@ feature 'User can view question and answers', %q{
 
   scenario "User views answer no the question's page" do
     answers.each do |answer|
-      expect(page).to have_content answer.title
       expect(page).to have_content answer.body
     end
   end

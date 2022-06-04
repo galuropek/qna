@@ -5,6 +5,11 @@ class QuestionsController < ApplicationController
   expose :questions, ->{ Question.all }
   expose :question
 
+  def show
+    @best_answer = question.best_answer
+    @other_answers = question.answers.where.not(id: question.best_answer_id)
+  end
+
   def create
     question.user = current_user
 
@@ -13,6 +18,10 @@ class QuestionsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def update
+    question.update(question_params) if current_user.author?(question)
   end
 
   def destroy

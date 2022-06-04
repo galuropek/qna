@@ -1,0 +1,18 @@
+.question-container
+  h2= question.title
+  p= question.body
+  - if user_signed_in? && current_user.author?(question)
+    .edit-question-errors
+      = render 'shared/errors', resource: question
+    = form_with model: question, local: false, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+      = f.label :title
+      = f.text_field :title
+      br
+      = f.label :body
+      = f.text_area :body
+      br
+      = f.submit 'Save'
+
+    div(class='actions')
+      p= link_to 'edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
+      p= link_to 'remove question', question_path(question), method: :delete

@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let(:answer) { create(:answer, user: user) }
+  let(:other_user) { create(:user) }
+  let(:other_answer) { create(:answer, user: other_user) }
+  let(:question) { create(:question, user: user, answers: [answer, other_answer]) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -30,11 +33,62 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PATCH #update' do
+    context 'Authenticated user' do
+      let!(:other_question) { create(:question, user: other_user) }
+
+      before { login(user) }
+
+      it 'changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+        question.reload
+        expect(question.title).to eq 'edited title'
+        expect(question.body).to eq 'edited body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js      
+        expect(response).to render_template :update
+      end
+
+      it 'does not change question attributes with error' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+          question.reload
+        end.to_not change(question, :title)
+      end
+
+      it 'renders update template after trying to update attributes with error' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+
+      it 'does not change someone else`s question' do
+        expect do
+          patch :update, params: { id: other_question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+          other_question.reload
+        end.to_not change(other_question, :title)
+      end
+
+      it 'renders update template after trying to update someone else`s question' do
+        patch :update, params: { id: other_question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'Unauthenticated user' do
+      it 'does not change question attributes' do
+        expect do
+          patch :update, params: { id: question, question: { title: 'edited title', body: 'edited body' } }, format: :js
+        end.to_not change(question, :title)
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     let!(:question) { create(:question, user: user) }
 
     context 'authenticated user' do
-      let(:other_user) { create(:user) }
       let!(:other_question) { create(:question, user: other_user) }
 
       before { login(user) }

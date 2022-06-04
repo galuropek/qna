@@ -1,25 +1,19 @@
-= render 'shared/errors', resource: @answer
-
 h1= 'Question:'
-h2= question.title
-p= question.body
-- if current_user&.author?(question)
-  = link_to 'Remove Question', question_path(question), method: :delete
+= render question
 
 h1= 'Answers:'
-ul
-  - question.answers.each do |answer|
-    - if answer.persisted?
-      li
-        p= answer.title
-        p= answer.body
-        - if current_user&.author?(answer)
-          = link_to 'remove answer', answer_path(answer), method: :delete
+
+.answers
+  - if question.best_answer
+    .best_answer
+      = render @best_answer
+
+  = render @other_answers
 
 h1= 'Answer the question:'
-= form_with model: @answer, url: question_answers_path(question), local: true do |f|
-  = f.label :title
-  = f.text_field :title
+.answer-errors
+  = render 'shared/errors', resource: @answer
+= form_with model: @answer, url: question_answers_path(question), local: false, format: :js do |f|
   = f.label :body
-  = f.text_area :body
+  = f.text_area :body, class: 'new-answer-body'
   = f.submit 'Answer'
