@@ -1,18 +1,20 @@
 - if answer.persisted?
-  div(class="answer-id-#{answer.id} answer")
-    p(class="body")= answer.body
+  .row
+    div(class="answer-id-#{answer.id} answer col-4")
+      p(class="body")= answer.body
 
-    - if user_signed_in? && current_user.author?(answer)
-      .edit-answer-errors
-        = render 'shared/errors', resource: @answer
-      = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-        = f.label :body, 'Your answer'
-        = f.text_area :body
-        = f.submit 'Save'
-      div(class='actions')
-        p= link_to 'edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-        p= link_to 'remove answer', answer_path(answer), method: :delete, remote: true
+      - if user_signed_in? && current_user.author?(answer)
+        .edit-answer-errors
+          = render 'shared/errors', resource: @answer
+        = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+          = f.label :body, 'Your answer'
+          = f.text_area :body
+          = f.submit 'Save'
+        div(class='d-flex justify-content-start')
+          p(class='pe-3')= link_to 'edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+          p(class='pe-3')
+            = link_to 'remove answer', answer_path(answer), method: :delete, remote: true, class: 'text-danger'
 
-    - if user_signed_in? && current_user.author?(answer.question)
-      div(class='actions')
-        p= link_to 'mark as best', best_answer_path(id: answer, question_id: answer.question), method: :post, class: 'mark_as_best'
+      - if user_signed_in? && current_user.author?(answer.question)
+        p(class='pe-3 text-success')
+          = link_to 'mark as best', best_answer_path(id: answer, question_id: answer.question), method: :post, class: 'mark_as_best text-success'
