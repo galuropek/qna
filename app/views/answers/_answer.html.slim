@@ -10,9 +10,10 @@
         .edit-answer-errors
           = render 'shared/errors', resource: @answer
         = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-          = f.label :body, 'Your answer'
-          = f.text_area :body
-          = f.submit 'Save'
+          = f.label :body, 'Your answer', class: 'form-label'
+          = f.text_area :body, class: 'form-control'
+          = f.file_field :files, multiple: true, class: 'form-control'
+          = f.submit 'Save', class: 'btn btn-primary mt-2'
         div(class='d-flex justify-content-start')
           p(class='pe-3')= link_to 'edit answer', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
           p(class='pe-3')
