@@ -1,18 +1,27 @@
 .question-container
-  h2= question.title
-  p= question.body
+  .row
+    .col-6
+      h2= question.title
+      p= question.body
+    .col
+      h5= 'Attachments:'
+      - if question.files.attached?
+        - question.files.each do |file|
+          ul
+            li= link_to file.filename.to_s, url_for(file)
+
   - if user_signed_in? && current_user.author?(question)
     .edit-question-errors
       = render 'shared/errors', resource: question
     = form_with model: question, local: false, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
-      = f.label :title
-      = f.text_field :title
-      br
-      = f.label :body
-      = f.text_area :body
-      br
-      = f.submit 'Save'
+      = f.label :title, class: 'form-label'
+      = f.text_field :title, class: 'form-control'
+      = f.label :body, class: 'form-label'
+      = f.text_area :body, class: 'form-control'
+      = f.label :files, class: 'form-label'
+      = f.file_field :files, multiple: true, class: 'form-control'
+      = f.submit 'Save', class: 'btn btn-primary mt-2'
 
     div(class='actions')
       p= link_to 'edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
-      p= link_to 'remove question', question_path(question), method: :delete
+      p= link_to 'remove question', question_path(question), method: :delete, class: 'text-danger'

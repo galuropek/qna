@@ -47,29 +47,10 @@ feature 'User can edit his answer', %q{
       end
     end
 
-    # tests bellow: cases from the screencast
-    scenario 'edits his several answers from the loaded page' do
-      other_answer
-      visit question_path(question)
-
-      within '.answers' do
-        page.all('.edit-answer-link').first.click
-        fill_in 'Your answer', with: 'first edited body'
-        click_on 'Save'
-
-        page.all('.edit-answer-link').last.click
-        fill_in 'Your answer', with: 'second edited body'
-        click_on 'Save'
-
-        check_edited_answer(answer, body: 'first edited body')
-        check_edited_answer(answer, body: 'second edited body')
-      end
-    end
-
     scenario 'edits answer after redirect from other page' do
       visit questions_path
-      all('.question-link').first.click
-      click_on 'edit answer'
+      all('.question-link').first.click(wait: true)
+      find('.edit-answer-link').click
 
       within '.answers' do
         fill_in 'Your answer', with: 'edited body'

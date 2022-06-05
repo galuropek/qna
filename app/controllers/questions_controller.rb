@@ -21,7 +21,15 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question.update(question_params) if current_user.author?(question)
+    if current_user.author?(question)
+      if question_params[:files]
+        q_params = question_params
+        question.files.attach(q_params.delete(:files))
+        question.update(q_params)
+      else
+        question.update(question_params)
+      end
+    end
   end
 
   def destroy
