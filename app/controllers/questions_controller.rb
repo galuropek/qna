@@ -41,6 +41,16 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def destroy_attachment
+    attachment = ActiveStorage::Attachment.find(params[:id])
+    question = attachment.record
+
+    if attachment && current_user&.author?(question)
+      attachment.purge
+      redirect_to question_path(question), notice: 'Attachment successfully removed.'
+    end
+  end
+
   private
 
   def set_answer

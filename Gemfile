@@ -36,6 +36,7 @@ gem 'decent_exposure', '~> 3.0'
 # Bootstrap
 gem 'jquery-rails'
 gem 'bootstrap', '~> 5.1.3'
+gem "font-awesome-rails"
 
 # ActiveStorage S3
 gem "aws-sdk-s3"

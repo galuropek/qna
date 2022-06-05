@@ -19,4 +19,9 @@ module FeatureHelpers
     expect(page).to have_content updated_attrs[:body]
     expect(page).to_not have_selector 'textarea'
   end
+
+  def attach_file_to(source)
+    source.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"),
+                        filename: 'rails_helper.rb', content_type: 'text/plain')
+  end
 end
