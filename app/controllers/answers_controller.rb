@@ -27,6 +27,16 @@ class AnswersController < ApplicationController
     answer.destroy if current_user.author?(answer)
   end
 
+  def destroy_attachment
+    attachment = ActiveStorage::Attachment.find(params[:id])
+    answer = attachment.record
+
+    if attachment && current_user&.author?(answer)
+      attachment.purge
+      redirect_to question_path(answer.question), notice: 'Attachment successfully removed.'
+    end
+  end
+
   def best
     if current_user.author?(answer.question)
       answer.mark_as_best

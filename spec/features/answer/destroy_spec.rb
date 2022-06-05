@@ -28,6 +28,18 @@ feature 'User can remove answer', %q{
 
       expect(page).to have_no_link 'remove answer'
     end
+
+    scenario 'removes attached file' do
+      attach_file_to(answer)
+      visit question_path(question)
+
+      within '.answers' do
+        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment').click
+        accept_confirm('Are you sure?')
+      end
+
+      expect(page).to_not have_link 'rails_helper.rb'
+    end
   end
 
   describe 'Unautheticated user' do

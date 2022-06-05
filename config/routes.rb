@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :answers, shallow: true do
       member do
         post :best
+        delete :destroy_attachment
       end
     end
   end
