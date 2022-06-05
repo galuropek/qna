@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
   before_action :set_answer, only: :show
 
   expose :questions, ->{ Question.all }
-  expose :question
+  expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
 
   def show
     @best_answer = question.best_answer
@@ -40,6 +40,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, :file)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end
