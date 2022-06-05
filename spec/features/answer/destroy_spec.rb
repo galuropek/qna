@@ -16,7 +16,7 @@ feature 'User can remove answer', %q{
 
     scenario 'removes his answer' do
       visit question_path(answer.question)
-      click_on 'remove answer'
+      within(".answer-id-#{answer.id}") { click_on 'remove answer' }
 
       within '.answers' do
         expect(page).to_not have_content answer.body

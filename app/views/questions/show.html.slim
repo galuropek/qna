@@ -1,10 +1,10 @@
-h1= 'Question:'
-= render question
+div(class='shadow-sm p-3 mb-5 bg-body rounded')
+  = render question
 
-h5= 'Attachments:'
-- if question.files.attached?
-  - question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file)
+  h5= 'Attachments:'
+  - if question.files.attached?
+    - question.files.each do |file|
+      p= link_to file.filename.to_s, url_for(file)
 
 h1= 'Answers:'
 
@@ -22,4 +22,6 @@ h1= 'Answer the question:'
   div(class='mb-3 col-4')
     = f.label :body, class: 'form-label'
     = f.text_area :body, class: 'new-answer-body form-control', placeholder: 'Answer the question here...'
+    = f.label :files, class: 'form-label'
+    = f.file_field :files, multiple: true, class: 'form-control'
     = f.submit 'Answer', class: 'btn btn-primary mt-2'
