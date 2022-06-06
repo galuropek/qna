@@ -10,7 +10,7 @@
           ul(class='attachments')
             li(class='attachment')
               = link_to file.filename.to_s, url_for(file)
-              = link_to fa_icon("trash", class: 'mx-1'), destroy_attachment_question_path(file.id),
+              = link_to fa_icon("trash", class: 'mx-1'), attachments_path(id: file),
                       method: :delete, class: 'text-dark remove-attachment',
                       data: { confirm: 'Are you sure?' }
 
