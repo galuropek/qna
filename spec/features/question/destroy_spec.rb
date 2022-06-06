@@ -26,12 +26,13 @@ feature 'User can remove question', %q{
       expect(page).to have_no_link 'Remove Question'
     end
 
-    scenario 'removes attached file' do
+    scenario 'removes attached file', js: true do
       attach_file_to(question)
       visit question_path(question)
 
       within '.attachments' do
-        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment').click
+        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment-link').click
+        accept_confirm('Are you sure?')
       end
 
       expect(page).to_not have_link 'rails_helper.rb'

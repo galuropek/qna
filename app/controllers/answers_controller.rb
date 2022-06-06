@@ -10,17 +10,10 @@ class AnswersController < ApplicationController
   end
 
   def update
-    if current_user.author?(answer)
-      if answer_params[:files]
-        a_params = answer_params
-        answer.files.attach(a_params.delete(:files))
-        answer.update(a_params)
-      else
-        answer.update(answer_params)
-      end
+    if current_user&.author?(answer)
+      answer.files.attach(answer_params[:files]) unless answer_params[:files].blank?
+      answer.update(answer_params.except(:files))
     end
-
-    @question = answer.question
   end
 
   def destroy

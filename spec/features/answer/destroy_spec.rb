@@ -34,7 +34,7 @@ feature 'User can remove answer', %q{
       visit question_path(question)
 
       within '.answers' do
-        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment').click
+        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment-link').click
         accept_confirm('Are you sure?')
       end
 

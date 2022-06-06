@@ -1,0 +1,6 @@
+li(class="attachment attachment-id-#{resource.id}")
+  = link_to resource.filename.to_s, url_for(resource)
+  = link_to fa_icon("trash", class: 'mx-1'), attachments_path(id: resource),
+          method: :delete, remote: true,
+          class: 'text-dark remove-attachment-link',
+          data: { confirm: 'Are you sure?' }

@@ -13,11 +13,11 @@ RSpec.describe AttachmentsController, type: :controller do
       before { login(user) }
 
       it 'removes attachment from answer' do
-        expect { delete :destroy, params: { id: answer.files.first } }.to change(ActiveStorage::Attachment, :count).by(-1)
+        expect { delete :destroy, params: { id: answer.files.first }, format: :js }.to change(ActiveStorage::Attachment, :count).by(-1)
       end
 
       it 'removes attachment from question' do
-        expect { delete :destroy, params: { id: question.files.first } }.to change(ActiveStorage::Attachment, :count).by(-1)
+        expect { delete :destroy, params: { id: question.files.first }, format: :js }.to change(ActiveStorage::Attachment, :count).by(-1)
       end
     end
 
@@ -26,21 +26,21 @@ RSpec.describe AttachmentsController, type: :controller do
       before { login(other_user) }
 
       it 'don\'t remove attachment from answer' do
-        expect { delete :destroy, params: { id: answer.files.first } }.to_not change(ActiveStorage::Attachment, :count)
+        expect { delete :destroy, params: { id: answer.files.first }, format: :js }.to_not change(ActiveStorage::Attachment, :count)
       end
 
       it 'don\'t remove attachment from question' do
-        expect { delete :destroy, params: { id: question.files.first } }.to_not change(ActiveStorage::Attachment, :count)
+        expect { delete :destroy, params: { id: question.files.first }, format: :js }.to_not change(ActiveStorage::Attachment, :count)
       end
     end
 
     context 'Unauthenticated user' do
       it 'don\'t remove attachment from answer' do
-        expect { delete :destroy, params: { id: answer.files.first } }.to_not change(ActiveStorage::Attachment, :count)
+        expect { delete :destroy, params: { id: answer.files.first }, format: :js }.to_not change(ActiveStorage::Attachment, :count)
       end
 
       it 'don\'t remove attachment from question' do
-        expect { delete :destroy, params: { id: question.files.first } }.to_not change(ActiveStorage::Attachment, :count)
+        expect { delete :destroy, params: { id: question.files.first }, format: :js }.to_not change(ActiveStorage::Attachment, :count)
       end
     end
   end

@@ -21,14 +21,9 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.author?(question)
-      if question_params[:files]
-        q_params = question_params
-        question.files.attach(q_params.delete(:files))
-        question.update(q_params)
-      else
-        question.update(question_params)
-      end
+    if current_user&.author?(question)
+      question.files.attach(question_params[:files]) unless question_params[:files].blank?
+      question.update(question_params.except(:files))
     end
   end
 

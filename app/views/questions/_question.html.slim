@@ -6,13 +6,9 @@
     .col
       h5= 'Attachments:'
       - if question.files.attached?
-        - question.files.each do |file|
-          ul(class='attachments')
-            li(class='attachment')
-              = link_to file.filename.to_s, url_for(file)
-              = link_to fa_icon("trash", class: 'mx-1'), attachments_path(id: file),
-                      method: :delete, class: 'text-dark remove-attachment',
-                      data: { confirm: 'Are you sure?' }
+        ul(class='attachments question_attachments')
+          - question.files.each do |file|
+            = render 'attachments/attachment', resource: file
 
   - if user_signed_in? && current_user.author?(question)
     .edit-question-errors

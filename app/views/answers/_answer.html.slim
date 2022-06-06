@@ -25,10 +25,6 @@
         .col
           h5= 'Attachments:'
           - if answer.files.attached?
-            ul
+            ul(class='attachments answer_attachments')
               - answer.files.each do |file|
-                li(class='attachment')
-                  = link_to file.filename.to_s, url_for(file)
-                  = link_to fa_icon("trash", class: 'mx-1'), attachments_path(id: file),
-                          method: :delete, class: 'text-dark remove-attachment',
-                          data: { confirm: 'Are you sure?' }
+                = render 'attachments/attachment', resource: file
