@@ -50,7 +50,7 @@ feature 'User can edit his question', %q{
     # tests case with turbolinks from the screencast
     scenario 'edits question after redirect from other page' do
       visit questions_path
-      all('.question-link').first.click
+      visit question_path(question)
 
       within '.question-container' do
         click_on 'edit question'
@@ -60,6 +60,44 @@ feature 'User can edit his question', %q{
         click_on 'Save'
 
         check_edited_question(question, title: 'edited title', body: 'edited body')
+      end
+    end
+
+    scenario 'adds attachments to the question' do
+      visit question_path(question)
+
+      within '.question-container' do
+        click_on 'edit question'
+
+        fill_in 'Title', with: 'edited title'
+        fill_in 'Body', with: 'edited body'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        check_edited_question(question, title: 'edited title', body: 'edited body')
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'adds attachments to the question when attachments already exist' do
+      visit question_path(question)
+      within '.question-container' do
+        click_on 'edit question'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+
+        click_on 'edit question'
+        attach_file 'File', ["#{Rails.root}/config/routes.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'routes.rb'
+        expect(question.files.count).to eq(3)
       end
     end
   end

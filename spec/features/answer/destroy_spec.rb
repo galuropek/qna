@@ -16,7 +16,7 @@ feature 'User can remove answer', %q{
 
     scenario 'removes his answer' do
       visit question_path(answer.question)
-      click_on 'remove answer'
+      within(".answer-id-#{answer.id}") { click_on 'remove answer' }
 
       within '.answers' do
         expect(page).to_not have_content answer.body
@@ -27,6 +27,18 @@ feature 'User can remove answer', %q{
       visit question_path(other_answer.question)
 
       expect(page).to have_no_link 'remove answer'
+    end
+
+    scenario 'removes attached file' do
+      attach_file_to(answer)
+      visit question_path(question)
+
+      within '.answers' do
+        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment-link').click
+        accept_confirm('Are you sure?')
+      end
+
+      expect(page).to_not have_link 'rails_helper.rb'
     end
   end
 

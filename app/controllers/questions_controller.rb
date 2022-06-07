@@ -3,7 +3,7 @@ class QuestionsController < ApplicationController
   before_action :set_answer, only: :show
 
   expose :questions, ->{ Question.all }
-  expose :question
+  expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
 
   def show
     @best_answer = question.best_answer
@@ -21,7 +21,10 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    question.update(question_params) if current_user.author?(question)
+    if current_user&.author?(question)
+      question.files.attach(question_params[:files]) unless question_params[:files].blank?
+      question.update(question_params.except(:files))
+    end
   end
 
   def destroy
@@ -40,6 +43,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, files: [])
   end
 end

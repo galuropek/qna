@@ -7,11 +7,11 @@ feature 'User can remove question', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user (author)' do
     given(:other_user) { create(:user) }
     given(:other_question) { create(:question, user: other_user) }
 
-    background { sign_in(user) } 
+    background { sign_in(user) }
 
     scenario 'removes his question' do
       visit question_path(question)
@@ -24,6 +24,18 @@ feature 'User can remove question', %q{
       visit question_path(other_question)
 
       expect(page).to have_no_link 'Remove Question'
+    end
+
+    scenario 'removes attached file', js: true do
+      attach_file_to(question)
+      visit question_path(question)
+
+      within '.attachments' do
+        find('.attachment', text: 'rails_helper.rb').find('.remove-attachment-link').click
+        accept_confirm('Are you sure?')
+      end
+
+      expect(page).to_not have_link 'rails_helper.rb'
     end
   end
 

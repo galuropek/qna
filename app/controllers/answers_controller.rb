@@ -10,8 +10,10 @@ class AnswersController < ApplicationController
   end
 
   def update
-    answer.update(answer_params) if current_user.author?(answer)
-    @question = answer.question
+    if current_user&.author?(answer)
+      answer.files.attach(answer_params[:files]) unless answer_params[:files].blank?
+      answer.update(answer_params.except(:files))
+    end
   end
 
   def destroy
@@ -37,9 +39,9 @@ class AnswersController < ApplicationController
     @question ||= Question.find(params[:question_id])
   end
 
-  helper_method :question 
+  helper_method :question
 
   def answer_params
-    params.require(:answer).permit(:title, :body)
+    params.require(:answer).permit(:title, :body, files: [])
   end
 end

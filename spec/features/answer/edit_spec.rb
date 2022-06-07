@@ -20,7 +20,7 @@ feature 'User can edit his answer', %q{
     end
   end
 
-  describe 'Authenticated user', js: true do
+  describe 'Authenticated user (author)', js: true do
     background { sign_in user }
 
     scenario 'edits his answer' do
@@ -47,35 +47,56 @@ feature 'User can edit his answer', %q{
       end
     end
 
-    # tests bellow: cases from the screencast
-    scenario 'edits his several answers from the loaded page' do
-      other_answer
-      visit question_path(question)
-
-      within '.answers' do
-        page.all('.edit-answer-link').first.click
-        fill_in 'Your answer', with: 'first edited body'
-        click_on 'Save'
-
-        page.all('.edit-answer-link').last.click
-        fill_in 'Your answer', with: 'second edited body'
-        click_on 'Save'
-
-        check_edited_answer(answer, body: 'first edited body')
-        check_edited_answer(answer, body: 'second edited body')
-      end
-    end
-
     scenario 'edits answer after redirect from other page' do
       visit questions_path
-      all('.question-link').first.click
-      click_on 'edit answer'
+      all('.question-link').first.click(wait: true)
+      find('.edit-answer-link').click
 
       within '.answers' do
         fill_in 'Your answer', with: 'edited body'
         click_on 'Save'
 
         check_edited_answer(answer, body: 'edited body')
+      end
+    end
+
+    scenario 'adds attachments to the answer' do
+      visit question_path(answer.question)
+
+      within ".answer-id-#{answer.id}" do
+        click_on 'edit answer'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'adds attachments to the answer when attachments already exist' do
+      visit question_path(answer.question)
+
+      within ".answer-id-#{answer.id}" do
+        click_on 'edit answer'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+
+      visit questions_path
+      visit question_path(answer.question)
+
+      within ".answer-id-#{answer.id}" do
+        click_on 'edit answer'
+        attach_file 'File', ["#{Rails.root}/config/routes.rb"]
+        click_on 'Save'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'routes.rb'
+        expect(answer.files.count).to eq(3)
       end
     end
   end

@@ -55,6 +55,4 @@ feature 'Author of question can choose best answer', %q{
       within('.answers') { expect(all(".answer").first).to have_content last_answer.body }
     end
   end
-
-
 end
