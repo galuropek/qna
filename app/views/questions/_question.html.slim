@@ -1,14 +1,19 @@
 .question-container
   .row
-    .col-6
+    .col-4
       h2= question.title
       p= question.body
-    .col
+    .col-4
       h5= 'Attachments:'
       - if question.files.attached?
         ul(class='attachments question_attachments')
           - question.files.each do |file|
             = render 'attachments/attachment', resource: file
+    .col
+      h5= 'Links:'
+      ul
+        - question.links.each do |link|
+          li= link_to link.name, link.url
 
   - if user_signed_in? && current_user.author?(question)
     .edit-question-errors

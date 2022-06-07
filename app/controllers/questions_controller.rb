@@ -2,10 +2,15 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_answer, only: :show
 
-  expose :questions, ->{ Question.all }
-  expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
+  expose :questions, -> { Question.all }
+  expose :question, find: ->(id, scope) { scope.with_attached_files.find(id) }
+
+  def new
+    question.links.build
+  end
 
   def show
+    @answer.links.build
     @best_answer = question.best_answer
     @other_answers = question.answers.where.not(id: question.best_answer_id)
   end
@@ -43,6 +48,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body,
+                                     files: [], links_attributes: [:name, :url])
   end
 end

@@ -1,0 +1,8 @@
+h5= 'Links:'
+= resource.fields_for :links do |l|
+
+  = l.label :name, 'Link name', class: 'form-label'
+  = l.text_field :name, class: 'form-control'
+
+  = l.label :url, class: 'form-label'
+  = l.text_field :url, class: 'form-control'

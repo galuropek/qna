@@ -97,12 +97,12 @@ RSpec.describe AnswersController, type: :controller do
 
       before { login(user) }
 
-      # it 'marks answer as a best' do
-      #   expect(question.best_answer).to be(nil)
-      #   patch :best, params: { id: answer }
-      #   question.reload
-      #   expect(question.best_answer).to eq answer
-      # end
+      it 'marks answer as a best' do
+        expect(question.best_answer).to be(nil)
+        patch :best, params: { id: answer }
+        question.reload
+        expect(question.best_answer).to eq answer
+      end
 
       it 'mark other answer as a best when best answer is exists' do
         expect(question.best_answer).to be(nil)
