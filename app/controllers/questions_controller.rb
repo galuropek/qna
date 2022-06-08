@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
     question.user = current_user
 
     if question.save
-      redirect_to question, notice: 'Your question successfully created.'
+      redirect_to question, success: 'Your question successfully created.'
     else
       render :new
     end
@@ -35,9 +35,9 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user&.author?(question)
       question.destroy
-      redirect_to questions_path, notice: 'Question successfully removed.'
+      redirect_to questions_path, success: 'Question successfully removed.'
     else
-      redirect_to question_path(question), notice: 'Question can be deleted only by the author.'
+      redirect_to question_path(question), danger: 'Question can be deleted only by the author.'
     end
   end
 

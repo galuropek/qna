@@ -10,10 +10,23 @@ feature 'User can add links to question', %q{
   given(:gist_url) { 'https://gist.github.com/galuropek/c324f0d28418078cae9aa4363e2dcf16' }
   given(:google_ru) { 'https://www.google.ru' }
   given(:google_com) { 'https://www.google.com' }
+  given(:incorrect_url) { 'foobar' }
 
   background do
     sign_in(user)
     visit new_question_path
+  end
+
+  scenario 'User can\'t add link with invalid url when asks question' do
+    fill_in 'Title', with: 'Question title'
+    fill_in 'Body', with: 'Question body'
+
+    fill_in 'Link name', with: 'New link'
+    fill_in 'Url', with: incorrect_url
+
+    click_on 'Ask'
+
+    expect(page).to have_content 'Links url is not an URL'
   end
 
   scenario 'User adds link when asks question', js: true do
