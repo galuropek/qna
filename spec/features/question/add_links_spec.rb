@@ -8,13 +8,17 @@ feature 'User can add links to question', %q{
 
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/galuropek/c324f0d28418078cae9aa4363e2dcf16' }
+  given(:google_ru) { 'https://www.google.ru' }
+  given(:google_com) { 'https://www.google.com' }
 
-  scenario 'User adds link when asks question' do
-    sign_in user
+  background do
+    sign_in(user)
     visit new_question_path
+  end
 
+  scenario 'User adds link when asks question', js: true do
     fill_in 'Title', with: 'Question title'
-    fill_in 'Body', with: 'question body'
+    fill_in 'Body', with: 'Question body'
 
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
@@ -22,5 +26,33 @@ feature 'User can add links to question', %q{
     click_on 'Ask'
 
     expect(page).to have_link 'My gist', href: gist_url
+  end
+
+  scenario 'User adds several extra links when asks question', js: true do
+    fill_in 'Title', with: 'Question title'
+    fill_in 'Body', with: 'Question body'
+
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'Url', with: gist_url
+
+    click_on 'add link'
+
+    within(all('.nested-fields').last) do
+      fill_in 'Link name', with: 'Google RU'
+      fill_in 'Url', with: google_ru
+    end
+
+    click_on 'add link'
+
+    within(all('.nested-fields').last) do
+      fill_in 'Link name', with: 'Google COM'
+      fill_in 'Url', with: google_com
+    end
+
+    click_on 'Ask'
+
+    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'Google RU', href: google_ru
+    expect(page).to have_link 'Google COM', href: google_com
   end
 end

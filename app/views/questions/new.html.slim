@@ -13,7 +13,6 @@
     = f.label :files, class: 'form-label'
     = f.file_field :files, multiple: true, class: 'form-control'
 
-    br
-    = render 'links/form', resource: f
+    = render 'links/links_fields', f: f
 
     = f.submit 'Ask', class: 'btn btn-primary mt-2'

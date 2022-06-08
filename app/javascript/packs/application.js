@@ -4,6 +4,7 @@
 // that code so it'll be compiled.
 
 require('jquery')
+require('@nathanvda/cocoon')
 require('packs/answers')
 require('packs/questions')
 
