@@ -11,9 +11,13 @@
             = render 'attachments/attachment', resource: file
     .col
       h5= 'Links:'
-      ul
+      ul(class='list-unstyled')
         - question.links.each do |link|
-          li= link_to link.name, link.url
+          li(class='question-link mb-2')
+            - if link.gist?
+              = link_to link.name, link.url, class: 'embed-gist', data: {'gist-id' => link.gist_id}
+            - else
+              = link_to link.name, link.url
 
   - if user_signed_in? && current_user.author?(question)
     .edit-question-errors

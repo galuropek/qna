@@ -11,5 +11,9 @@ FactoryBot.define do
     trait :answer do
       linkable { create(:answer) }
     end
+
+    trait :gist do
+      url { 'https://gist.github.com/galuropek/c324f0d28418078cae9aa4363e2dcf16' }
+    end
   end
 end

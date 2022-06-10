@@ -7,7 +7,7 @@
 
           - if user_signed_in? && current_user.author?(answer)
             .edit-answer-errors
-              = render 'shared/errors', resource: @answer
+              = render 'shared/errors', resource: answer
             = form_with model: answer, local: false, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
               = f.label :body, 'Your answer', class: 'form-label'
               = f.text_area :body, class: 'form-control'
@@ -31,6 +31,10 @@
 
         .col
           h5= 'Links:'
-          ul
-            - @answer.links.each do |link|
-              li= link_to link.name, link.url
+          ul(class='list-unstyled')
+            - answer.links.each do |link|
+              li(class='answer-link mb-2')
+                - if link.gist?
+                  = link_to link.name, link.url, class: 'embed-gist', data: { 'gist-id' => link.gist_id }
+                - else
+                  = link_to link.name, link.url
