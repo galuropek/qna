@@ -9,5 +9,9 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
+    trait :with_link do
+      links { [create(:link)] }
+    end
   end
 end

@@ -33,8 +33,5 @@
           h5= 'Links:'
           ul(class='list-unstyled')
             - answer.links.each do |link|
-              li(class='answer-link mb-2')
-                - if link.gist?
-                  = link_to link.name, link.url, class: 'embed-gist', data: { 'gist-id' => link.gist_id }
-                - else
-                  = link_to link.name, link.url
+              li(class="answer-link link-id-#{link.id} mb-2")
+                = render 'links/link', link: link

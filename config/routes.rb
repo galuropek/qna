@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   end
 
   resource :attachments, only: :destroy
+  resource :links, only: :destroy
 end
