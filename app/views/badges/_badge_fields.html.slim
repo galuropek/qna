@@ -1,0 +1,6 @@
+h5= 'Badge:'
+= f.fields_for :badge do |badge|
+  = badge.label :name, 'Badge Name', class: 'form-label'
+  = badge.text_field :name, class: 'form-control'
+  = badge.label :image, class: 'form-label'
+  = badge.file_field :image, class: 'form-control'

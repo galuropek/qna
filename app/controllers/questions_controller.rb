@@ -6,6 +6,7 @@ class QuestionsController < ApplicationController
   expose :question, find: ->(id, scope) { scope.with_attached_files.find(id) }
 
   def new
+    question.build_badge
     question.links.build
   end
 
@@ -48,7 +49,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body,
-                                     files: [], links_attributes: [:name, :url])
+    params.require(:question).permit(:title, :body, files: [],
+                                     links_attributes: [:name, :url],
+                                     badge_attributes: [:name, :image])
   end
 end

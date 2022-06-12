@@ -1,0 +1,8 @@
+.card.mb-3.badge-container style=("max-width: 200px;")
+  .row.g-0
+    .col-md-4
+      = image_tag badge.image, class: "badge-image", style: "width: 60px"
+    .col-md-8
+      .card-body
+        p.card-text.badge-name
+          = badge.name

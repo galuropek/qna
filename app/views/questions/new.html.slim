@@ -9,10 +9,19 @@
 
     = f.label :body, class: 'form-label'
     = f.text_area :body, class: 'form-control'
-
+    hr
+    h5= 'Attachments:'
     = f.label :files, class: 'form-label'
     = f.file_field :files, multiple: true, class: 'form-control'
-
+    hr
+    h5= 'Badge:'
+    = f.fields_for :badge do |l|
+        = l.label :name, 'Badge Name', class: 'form-label'
+        = l.text_field :name, class: 'form-control'
+        = l.label :image, class: 'form-label'
+        = l.file_field :image, class: 'form-control'
+    / = render 'badges/badge_fields', f: f
+    hr
     = render 'links/links_fields', f: f
 
     = f.submit 'Ask', class: 'btn btn-primary mt-2'

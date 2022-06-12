@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails'
 gem 'devise'
 gem "cocoon"
+gem "mini_magick"
 
 # Controller simplification
 gem 'decent_exposure', '~> 3.0'

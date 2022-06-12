@@ -127,7 +127,6 @@ GEM
     ffi (1.15.4)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
-    gist-embed-rails (2.0.0)
     globalid (0.5.2)
       activesupport (>= 5.0)
     i18n (1.8.11)
@@ -152,6 +151,7 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.6.1)
     minitest (5.14.4)
@@ -330,11 +330,11 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   font-awesome-rails
-  gist-embed-rails
   jbuilder (~> 2.7)
   jquery-rails
   launchy
   listen (~> 3.3)
+  mini_magick
   pg (~> 1.1)
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
