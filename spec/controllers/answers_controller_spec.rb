@@ -93,6 +93,11 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #mark_as_best' do
+    let(:badge_user) { create(:user) }
+    let(:badge_question) { create(:question, badge: badge, user: user) }
+    let(:badge) { create(:badge, question: question, user: user) }
+    let(:badge_answer) { create(:answer, user: badge_user, question: badge_question) }
+
     context 'Author of question' do
 
       before { login(user) }
@@ -113,6 +118,11 @@ RSpec.describe AnswersController, type: :controller do
         question.reload
         expect(question.best_answer).to eq other_answer
       end
+
+      it 'marks answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.badges).to include(badge)
+      end
     end
 
     context 'Authenticated user (but not author)' do
@@ -124,14 +134,23 @@ RSpec.describe AnswersController, type: :controller do
         question.reload
         expect(question.best_answer).to be(nil)
       end
+
+      it 'can\'t mark answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.badges).to_not include(badge)
+      end
     end
 
     context 'Unauthenticated user' do
-      it "can't mark answer as a best" do
-        expect(question.best_answer).to be(nil)
+      it 'can\'t mark answer as a best' do
         patch :best, params: { id: answer }
         question.reload
         expect(question.best_answer).to be(nil)
+      end
+
+      it 'can\'t mark answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.badges).to_not include(badge)
       end
     end
   end

@@ -23,6 +23,7 @@ class AnswersController < ApplicationController
   def best
     if current_user.author?(answer.question)
       answer.mark_as_best
+      author.badges.push(answer.question.badge) if answer.question.badge.present?
       redirect_to question_path(answer.question)
     end
   end
@@ -40,6 +41,10 @@ class AnswersController < ApplicationController
   end
 
   helper_method :question
+
+  def author
+    @author ||= answer.user
+  end
 
   def answer_params
     params.require(:answer).permit(:title, :body,

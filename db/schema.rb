@@ -57,9 +57,11 @@ ActiveRecord::Schema.define(version: 2022_06_12_190508) do
   create_table "badges", force: :cascade do |t|
     t.string "name"
     t.bigint "question_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_badges_on_question_id"
+    t.index ["user_id"], name: "index_badges_on_user_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -100,5 +102,6 @@ ActiveRecord::Schema.define(version: 2022_06_12_190508) do
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "badges", "questions"
+  add_foreign_key "badges", "users"
   add_foreign_key "questions", "users"
 end
