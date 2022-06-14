@@ -14,7 +14,17 @@ class Answer < ApplicationRecord
     question.update(best_answer_id: self.id)
   end
 
+  def award_author
+    user.reward(award) if award.present?
+  end
+
   def best?
     self == self.question.best_answer
+  end
+
+  private
+
+  def award
+    question.award
   end
 end

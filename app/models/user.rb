@@ -8,6 +8,11 @@ class User < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :awards
 
+  def reward(award)
+    awards.push(award)
+    self.save
+  end
+
   def author?(entity)
     entity.user_id == id
   end
