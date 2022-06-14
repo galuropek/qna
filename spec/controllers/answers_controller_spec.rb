@@ -94,8 +94,8 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PATCH #mark_as_best' do
     let(:badge_user) { create(:user) }
-    let(:badge_question) { create(:question, badge: badge, user: user) }
-    let(:badge) { create(:badge, question: question, user: user) }
+    let(:badge_question) { create(:question, award: badge, user: user) }
+    let(:badge) { create(:award, question: question, user: user) }
     let(:badge_answer) { create(:answer, user: badge_user, question: badge_question) }
 
     context 'Author of question' do
@@ -121,7 +121,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'marks answer as a best with badge' do
         patch :best, params: { id: badge_answer }
-        expect(badge_user.badges).to include(badge)
+        expect(badge_user.awards).to include(badge)
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'can\'t mark answer as a best with badge' do
         patch :best, params: { id: badge_answer }
-        expect(badge_user.badges).to_not include(badge)
+        expect(badge_user.awards).to_not include(badge)
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'can\'t mark answer as a best with badge' do
         patch :best, params: { id: badge_answer }
-        expect(badge_user.badges).to_not include(badge)
+        expect(badge_user.awards).to_not include(badge)
       end
     end
   end

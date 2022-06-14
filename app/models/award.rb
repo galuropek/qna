@@ -1,4 +1,4 @@
-class Badge < ApplicationRecord
+class Award < ApplicationRecord
   belongs_to :question
   belongs_to :user, optional: true
 

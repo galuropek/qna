@@ -1,6 +1,6 @@
 h1= current_user.email
-h5= 'Badges:'
-- (current_user.badges || []).each do |badge|
+h5= 'Awards:'
+- @awards.each do |badge|
   div(class="badge-id-#{badge.id}")
     .question-title
       = badge.question.title

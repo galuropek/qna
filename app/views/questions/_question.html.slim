@@ -3,8 +3,8 @@
     .col-4
       h2= question.title
       p= question.body
-      - if question.badge.present?
-        = render 'badges/badge', badge: question.badge
+      - if question.award.present?
+        = render 'awards/badge', badge: question.award
 
     .col-4
       h5= 'Attachments:'

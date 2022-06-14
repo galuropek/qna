@@ -23,8 +23,8 @@ class AnswersController < ApplicationController
   def best
     if current_user.author?(answer.question)
       answer.mark_as_best
-      if answer.question.badge.present?
-        author.badges.push(answer.question.badge)
+      if answer.question.award.present?
+        author.awards.push(answer.question.award)
         author.save
       end
       redirect_to question_path(answer.question)

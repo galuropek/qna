@@ -6,13 +6,9 @@ class User < ApplicationRecord
 
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
-  has_many :badges
+  has_many :awards
 
   def author?(entity)
     entity.user_id == id
-  end
-
-  def have_badge?(badge)
-    badges.include?(badge)
   end
 end
