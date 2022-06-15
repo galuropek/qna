@@ -4,6 +4,8 @@ nav(class="navbar navbar-expand-lg bg-light")
       = link_to 'Home', questions_path
 
     - if user_signed_in?
+      p.px-5
+        = link_to 'My awards', user_awards_path(current_user)
       p(class='px-5')
         = link_to 'Logout', destroy_user_session_path, method: :delete
     - else

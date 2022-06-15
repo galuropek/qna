@@ -2,10 +2,20 @@
 
 = form_with model: question, local: true do |f|
   div(class='mb-3 figure')
+
+    h5= 'Question:'
     = f.label :title, class: 'form-label'
     = f.text_field :title, class: 'form-control'
+
     = f.label :body, class: 'form-label'
     = f.text_area :body, class: 'form-control'
+    hr
+    h5= 'Attachments:'
     = f.label :files, class: 'form-label'
     = f.file_field :files, multiple: true, class: 'form-control'
+    hr
+    = render 'awards/badge_fields', f: f
+    hr
+    = render 'links/links_fields', f: f
+
     = f.submit 'Ask', class: 'btn btn-primary mt-2'

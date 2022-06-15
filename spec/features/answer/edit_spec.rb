@@ -11,6 +11,7 @@ feature 'User can edit his answer', %q{
   given!(:answer) { create(:answer, question: question, user: user) }
   given(:other_user) { create(:user) }
   given(:other_answer) { create(:answer, question: question, user: user) }
+  given(:google_com) { 'https://www.google.com' }
 
   describe 'Unauthenticated user' do
     scenario 'can`t edit answer' do
@@ -97,6 +98,22 @@ feature 'User can edit his answer', %q{
         expect(page).to have_link 'spec_helper.rb'
         expect(page).to have_link 'routes.rb'
         expect(answer.files.count).to eq(3)
+      end
+    end
+
+    scenario 'adds link to the answer', js: true do
+      visit question_path(answer.question)
+
+      within ".answer-id-#{answer.id}" do
+        click_on 'edit answer'
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'Google COM'
+        fill_in 'Url', with: google_com
+
+        click_on 'Save'
+
+        expect(page).to have_link 'Google COM', href: google_com
       end
     end
   end

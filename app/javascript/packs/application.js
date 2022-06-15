@@ -4,8 +4,13 @@
 // that code so it'll be compiled.
 
 require('jquery')
+require('@nathanvda/cocoon')
+require('underscore/underscore-min')
 require('packs/answers')
 require('packs/questions')
+require('packs/gists_embed')
+
+global.Gh3 = require('gh3/gh3')
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"

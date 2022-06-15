@@ -2,21 +2,24 @@ div(class='shadow-sm p-3 mb-5 bg-body rounded')
   = render question
 
 h1= 'Answers:'
-
 .answers
   - if question.best_answer
     .best_answer
       = render @best_answer
-
   = render @other_answers
 
 h1= 'Answer the question:'
 .answer-errors
   = render 'shared/errors', resource: @answer
+
 = form_with model: @answer, url: question_answers_path(question), local: false, format: :js do |f|
   div(class='mb-3 col-4')
     = f.label :body, class: 'form-label'
     = f.text_area :body, class: 'new-answer-body form-control', placeholder: 'Answer the question here...'
+
     = f.label :files, class: 'form-label'
     = f.file_field :files, multiple: true, class: 'form-control'
+
+    = render 'links/links_fields', f: f
+
     = f.submit 'Answer', class: 'btn btn-primary mt-2'

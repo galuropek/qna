@@ -1,5 +1,8 @@
-- if resource&.errors.present?
-  b= "#{resource.errors.count} error(s) detected: "
-  ul
-    -resource.errors.full_messages.each do |message|
-      li= message
+- if resource.present? && resource.errors.present?
+  = content_tag :div, class: 'alert alert-danger resource-errors', data: { resource_id: resource.id } do
+    h2
+      = pluralize(resource.errors.count, 'error')
+      |  detected:
+    ul
+      - resource.errors.full_messages.each do |message|
+        li= message

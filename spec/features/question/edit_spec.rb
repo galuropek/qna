@@ -9,6 +9,7 @@ feature 'User can edit his question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
   given(:other_user) { create(:user) }
+  given(:google_com) { 'https://www.google.com' }
 
   describe 'Unauthenticated user' do
     scenario 'can`t edit question' do
@@ -98,6 +99,22 @@ feature 'User can edit his question', %q{
         expect(page).to have_link 'spec_helper.rb'
         expect(page).to have_link 'routes.rb'
         expect(question.files.count).to eq(3)
+      end
+    end
+
+    scenario 'adds link to the question', js: true do
+      visit question_path(question)
+
+      within '.question-container' do
+        click_on 'edit question'
+        click_on 'add link'
+
+        fill_in 'Link name', with: 'Google COM'
+        fill_in 'Url', with: google_com
+
+        click_on 'Save'
+
+        expect(page).to have_link 'Google COM', href: google_com
       end
     end
   end

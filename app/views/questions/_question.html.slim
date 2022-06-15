@@ -1,25 +1,41 @@
 .question-container
   .row
-    .col-6
+    .col-4
       h2= question.title
       p= question.body
-    .col
+      - if question.award.present?
+        = render 'awards/badge', badge: question.award
+
+    .col-4
       h5= 'Attachments:'
       - if question.files.attached?
         ul(class='attachments question_attachments')
           - question.files.each do |file|
             = render 'attachments/attachment', resource: file
+    .col
+      h5= 'Links:'
+      ul(class='list-unstyled')
+        - question.links.each do |link|
+          li(class="question-link link-id-#{link.id} mb-2")
+            = render 'links/link', link: link
 
+  // Edit question section
   - if user_signed_in? && current_user.author?(question)
     .edit-question-errors
       = render 'shared/errors', resource: question
     = form_with model: question, local: false, class: 'hidden', html: { id: "edit-question-#{question.id}" } do |f|
+      // question's title field
       = f.label :title, class: 'form-label'
       = f.text_field :title, class: 'form-control'
+      // question's body field
       = f.label :body, class: 'form-label'
       = f.text_area :body, class: 'form-control'
+      // question's attachment field
       = f.label :files, class: 'form-label'
       = f.file_field :files, multiple: true, class: 'form-control'
+      // question's link field
+      = render 'links/links_fields', f: f
+
       = f.submit 'Save', class: 'btn btn-primary mt-2'
 
     div(class='actions')

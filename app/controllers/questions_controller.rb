@@ -2,10 +2,16 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   before_action :set_answer, only: :show
 
-  expose :questions, ->{ Question.all }
-  expose :question, find: ->(id, scope){ scope.with_attached_files.find(id) }
+  expose :questions, -> { Question.all }
+  expose :question, find: ->(id, scope) { scope.with_attached_files.find(id) }
+
+  def new
+    question.build_award
+    question.links.build
+  end
 
   def show
+    @answer.links.build
     @best_answer = question.best_answer
     @other_answers = question.answers.where.not(id: question.best_answer_id)
   end
@@ -14,7 +20,7 @@ class QuestionsController < ApplicationController
     question.user = current_user
 
     if question.save
-      redirect_to question, notice: 'Your question successfully created.'
+      redirect_to question, success: 'Your question successfully created.'
     else
       render :new
     end
@@ -30,9 +36,9 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user&.author?(question)
       question.destroy
-      redirect_to questions_path, notice: 'Question successfully removed.'
+      redirect_to questions_path, success: 'Question successfully removed.'
     else
-      redirect_to question_path(question), notice: 'Question can be deleted only by the author.'
+      redirect_to question_path(question), danger: 'Question can be deleted only by the author.'
     end
   end
 
@@ -43,6 +49,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, files: [],
+                                     links_attributes: [:name, :url],
+                                     award_attributes: [:name, :image])
   end
 end

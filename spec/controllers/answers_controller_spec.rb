@@ -93,25 +93,27 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #mark_as_best' do
+    let(:badge_user) { create(:user) }
+    let(:badge_question) { create(:question, award: badge, user: user) }
+    let(:badge) { create(:award, question: question, user: user) }
+    let(:badge_answer) { create(:answer, user: badge_user, question: badge_question) }
+
     context 'Author of question' do
 
       before { login(user) }
 
-      # it 'marks answer as a best' do
-      #   expect(question.best_answer).to be(nil)
-      #   patch :best, params: { id: answer }
-      #   question.reload
-      #   expect(question.best_answer).to eq answer
-      # end
+      it 'marks answer as a best' do
+        expect { patch :best, params: { id: answer } }.to change { question.reload.best_answer }.from(nil).to(answer)
+      end
 
       it 'mark other answer as a best when best answer is exists' do
-        expect(question.best_answer).to be(nil)
         question.update(best_answer_id: answer.id)
-        question.reload
-        expect(question.best_answer).to eq answer
-        patch :best, params: { id: other_answer }
-        question.reload
-        expect(question.best_answer).to eq other_answer
+        expect { patch :best, params: { id: other_answer } }.to change { question.reload.best_answer }.from(answer).to(other_answer)
+      end
+
+      it 'marks answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.awards).to include(badge)
       end
     end
 
@@ -124,14 +126,23 @@ RSpec.describe AnswersController, type: :controller do
         question.reload
         expect(question.best_answer).to be(nil)
       end
+
+      it 'can\'t mark answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.awards).to_not include(badge)
+      end
     end
 
     context 'Unauthenticated user' do
-      it "can't mark answer as a best" do
-        expect(question.best_answer).to be(nil)
+      it 'can\'t mark answer as a best' do
         patch :best, params: { id: answer }
         question.reload
         expect(question.best_answer).to be(nil)
+      end
+
+      it 'can\'t mark answer as a best with badge' do
+        patch :best, params: { id: badge_answer }
+        expect(badge_user.awards).to_not include(badge)
       end
     end
   end
